@@ -1,0 +1,7 @@
+https://archive.ics.uci.edu/dataset/942/rt-iot2022
+
+
+https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data
+
+
+https://archive.ics.uci.edu/dataset/882/large-scale+wave+energy+farm

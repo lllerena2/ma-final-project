@@ -1,9 +1,0 @@
-leak_dia: diametro de la fuga en pulgadas
-leak_distance: distancia de la fuga al punto de medición del ROD (en el inicio de la tubería)
-pressure: presión de entrada al tramo
-flow_pipe: flujo de entrada a la tubería
-rod: valor cálculado del ROD máximo generado
-leak_flow: flujo a través de la fuga cuando se genera.
-
-
-El rod y leak_flow son resultados de las otras variables simuladas.

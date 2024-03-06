@@ -5,7 +5,7 @@ layout_page1 = dbc.Container([
     dbc.Row([
         dbc.Col([
             html.H1("Bienvenido a Mi Aplicación Dash"),
-            html.P("Esta es una descripción del problema y del modelo que estamos resolviendo."),
+            html.P("Esta es una descripción del problema y del modelo xyz"),
             html.P("En esta aplicación podrás hacer predicciones manuales y por lotes."),
         ], width=8),
         dbc.Col([

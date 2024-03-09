@@ -6,6 +6,10 @@ import plotly.express as px
 import pandas as pd
 
 
+
+#df_graph = pd.read_csv("utils/train_rod.csv")
+#fig = 
+
 layout_page2 = dbc.Container([
     html.H1("Estimación del ROD"),
     html.P("Ingresa los datos y haz clic en el botón 'Predecir' para obtener una estimación:"),
@@ -26,18 +30,19 @@ layout_page2 = dbc.Container([
             html.Br(),
             html.Div(id="output-prediction"),
         ], width=6),
-        dbc.Col([dcc.Graph(id="graph-model")
+        dbc.Col([html.Div(html.Img(src="/assets/imagen.png", className="img-fluid", style={'width': '100%'})),
         ], width=6)
     ])
 ])
 
 @callback(
-    Output('output-prediction', 'children'),
+    [Output('output-prediction', 'children'),
+     Output('grafico_prueba', 'children')
+     ],
     Input('btn-predict', 'n_clicks'),
     State('input-x1', 'value'),
     State('input-x2', 'value'),
     State('input-x3', 'value'),
-    State('graph-model', 'figure'),
     prevent_initial_call=True
 )
 def update_prediction(n_clicks, x1, x2, x3, figure):
@@ -48,13 +53,10 @@ def update_prediction(n_clicks, x1, x2, x3, figure):
     rod = model.predict_rod(x1, x2, x3)
     #flow = model.predict_flow(rod)
 
-    # Gráfica
-    # figure['data'][0]['y'] = [x1, x2, x3]
-    df_graph = pd.DataFrame("utils/train_rod.csv")
-    fig = px.scatter(df_graph, x='rod', y='leak_flow', title='ROD vs Leak Flow')
+
     
     return html.Div([
     html.H5("Resultado de la predicción:"),
     html.P(f'El valor esperado de ROD es: {rod} psig/min (RSME=0.95)', style={'font-weight': 'bold'}),
-    dcc.Graph(id='graph-model', figure=fig)
+    # dcc.Graph(id='graph-model', figure=fig)
 ], className="text-center")

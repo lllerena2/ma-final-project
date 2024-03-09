@@ -36,16 +36,14 @@ layout_page2 = dbc.Container([
 ])
 
 @callback(
-    [Output('output-prediction', 'children'),
-     Output('grafico_prueba', 'children')
-     ],
+    Output('output-prediction', 'children'),
     Input('btn-predict', 'n_clicks'),
     State('input-x1', 'value'),
     State('input-x2', 'value'),
     State('input-x3', 'value'),
     prevent_initial_call=True
 )
-def update_prediction(n_clicks, x1, x2, x3, figure):
+def update_prediction(n_clicks, x1, x2, x3):
     if n_clicks is None:
         return ""
 

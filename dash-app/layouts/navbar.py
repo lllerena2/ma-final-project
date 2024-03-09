@@ -6,7 +6,7 @@ navbar = dbc.NavbarSimple(
         dbc.NavItem(dbc.NavLink("Modelo", href="/page2")),
         dbc.NavItem(dbc.NavLink("Predicción", href="/page3")),
     ],
-    brand="Mi Aplicación Dash",
+    brand="ROD en Gasoductos",
     brand_href="/",
     color="primary",
     dark=True,

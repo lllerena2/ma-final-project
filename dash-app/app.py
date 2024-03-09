@@ -38,4 +38,5 @@ def render_page_content(pathname):
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    #app.run_server(debug=True)
+    app.run_server(host='0.0.0.0')

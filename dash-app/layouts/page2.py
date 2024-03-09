@@ -2,28 +2,31 @@ import dash_bootstrap_components as dbc
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 import utils.model as model
+import plotly.express as px
+import pandas as pd
+
 
 layout_page2 = dbc.Container([
-    html.H1("Predicción Manual"),
-    html.P("Ingresa los valores de entrada para obtener una predicción:"),
+    html.H1("Estimación del ROD"),
+    html.P("Ingresa los datos y haz clic en el botón 'Predecir' para obtener una estimación:"),
     dbc.Row([
         dbc.Col([
-            html.H5("Variable X1"),
-            html.P("Descripción de la variable X1"),
-            dbc.Input(id="input-x1", placeholder="Valor de X1", type="number"),
+            html.H5("leak_dia"),
+            html.P("Diámetro de la fuga o fisura (pulgadas)"),
+            dbc.Input(id="input-x1", placeholder="in", type="number"),
             html.Br(),
-            html.H5("Variable X2"),
-            html.P("Descripción de la variable X2"),
-            dbc.Input(id="input-x2", placeholder="Valor de X2", type="number"),
+            html.H5("pressure"),
+            html.P("Presión de entrada al gasoducto (psig)"),
+            dbc.Input(id="input-x2", placeholder="psig", type="number"),
             html.Br(),
-            html.H5("Variable X3"),
-            html.P("Descripción de la variable X3"),
-            dbc.Input(id="input-x3", placeholder="Valor de X3", type="number"),
-            dbc.Button("Predecir", id="btn-predict", color="primary", className="mt-3")
-        ], width=6),
-        dbc.Col([
+            html.H5("flow_pipe"),
+            html.P("Flujo de entrada al gasoducto (Mpcd)"),
+            dbc.Input(id="input-x3", placeholder="mpcd", type="number"),
+            dbc.Button("Predecir", id="btn-predict", color="primary", className="mt-3"),
+            html.Br(),
             html.Div(id="output-prediction"),
-            dcc.Graph(id="graph-model")
+        ], width=6),
+        dbc.Col([dcc.Graph(id="graph-model")
         ], width=6)
     ])
 ])
@@ -34,19 +37,25 @@ layout_page2 = dbc.Container([
     State('input-x1', 'value'),
     State('input-x2', 'value'),
     State('input-x3', 'value'),
-    State('graph-model', 'figure')
+    State('graph-model', 'figure'),
+    prevent_initial_call=True
 )
 def update_prediction(n_clicks, x1, x2, x3, figure):
     if n_clicks is None:
-        return "Haz clic en el botón 'Predecir' para obtener una predicción"
+        return ""
 
     # Realizar la predicción utilizando el modelo
-    prediction = model.predict(x1, x2, x3)
+    rod = model.predict_rod(x1, x2, x3)
+    flow = model.predict_flow(rod)
 
-    # Actualizar la gráfica del modelo (por ahora, solo un ejemplo)
+
+    # Gráfica
     # figure['data'][0]['y'] = [x1, x2, x3]
+    df_graph = pd.DataFrame("utils/train_rod.csv")
+    fig = px.scatter(df_graph, x='rod', y='leak_flow', title='ROD vs Leak Flow')
     
     return html.Div([
-    html.H5("Resultado de la predicción"),
-    html.P(f'El grupo predicho es: {prediction}', style={'font-weight': 'bold'})
+    html.H5("Resultado de la predicción:"),
+    html.P(f'El valor esperado de ROD es: {rod} psig/min (RSME=0.95)', style={'font-weight': 'bold'}),
+    dcc.Graph(id='graph-model', figure=fig)
 ], className="text-center")

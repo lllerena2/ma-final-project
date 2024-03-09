@@ -1,15 +1,24 @@
+import joblib
+from sklearn.pipeline import Pipeline
 
 
-def predict(x1, x2, x3):
-    # Lógica para realizar la predicción manual
-    # Aquí deberías implementar la lógica para cargar el modelo y hacer la predicción
-    # con los valores de entrada x1, x2, x3
-    prediction = x1+x2+x3  # Reemplaza esto con la predicción real
-    return prediction
+polynomial_features = joblib.load('utils/polynomial_features.pkl')
+linear_regression = joblib.load('utils/best_regressor.pkl')
+#tree_regressor = joblib.load('utils/flow-rod_regressor.pkl')
 
-def predict_batch(df):
-    # Lógica para realizar las predicciones por lotes
-    # Aquí deberías implementar la lógica para cargar el modelo y hacer las predicciones
-    # en un DataFrame con los datos de entrada
-    predictions = [0] * len(df)  # Reemplaza esto con las predicciones reales
+modelo_rod = Pipeline([
+    ('poly', polynomial_features),
+    ('regression', linear_regression)
+])
+
+def predict_rod(x1, x2, x3):
+    prediction = modelo_rod.predict([[x1, x2, x3]]) 
+    return prediction[0]
+
+def predict_rod_batch(df):
+    predictions = modelo_rod.predict(df)
     return predictions
+
+"""def predict_flow(rod):
+    flow = tree_regressor.predict([[rod, rod**2]])
+    return flow[0]"""

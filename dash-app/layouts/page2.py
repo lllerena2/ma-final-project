@@ -46,8 +46,7 @@ def update_prediction(n_clicks, x1, x2, x3, figure):
 
     # Realizar la predicción utilizando el modelo
     rod = model.predict_rod(x1, x2, x3)
-    flow = model.predict_flow(rod)
-
+    #flow = model.predict_flow(rod)
 
     # Gráfica
     # figure['data'][0]['y'] = [x1, x2, x3]
